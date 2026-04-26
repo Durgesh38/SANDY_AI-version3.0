@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SANDY AI — Security Intelligence System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   SANDY AI — MILITARY HACKER NOC AESTHETIC
+   Phosphor green on near-black + amber accents + scanlines
+════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:       #030a06;
+  --bg2:      #060f09;
+  --bg3:      #091510;
+  --panel:    #0b1a10;
+  --border:   #0f3a1a;
+  --border2:  #1a5a28;
+  --green:    #00ff41;
+  --green2:   #00cc33;
+  --green3:   #007a1f;
+  --amber:    #ffaa00;
+  --red:      #ff2244;
+  --cyan:     #00ffcc;
+  --muted:    #2a5a35;
+  --text:     #a0ffb8;
+  --dim:      #3a6a45;
+  --glow:     0 0 10px rgba(0,255,65,0.5);
+  --glow2:    0 0 20px rgba(0,255,65,0.3);
+  --glow-a:   0 0 10px rgba(255,170,0,0.5);
+}
+html{height:100%;background:var(--bg);}
+body{
+  height:100%;min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  overflow:hidden;
+  cursor:crosshair;
+}
+
+/* ── Scanline overlay ────────────────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px
+  );
+}
+/* ── Screen flicker ─────────────────────────────────────────── */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background:rgba(0,255,65,0.015);
+  animation:flicker 8s infinite;
+}
+@keyframes flicker{
+  0%,95%,100%{opacity:1;}
+  96%{opacity:0.92;}
+  97%{opacity:1;}
+  98%{opacity:0.88;}
+  99%{opacity:1;}
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.app{display:grid;grid-template-rows:56px 1fr;grid-template-columns:260px 1fr;height:100vh;gap:0;}
+.topbar{grid-column:1/-1;display:flex;align-items:center;gap:16px;
+  padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border2);
+  position:relative;overflow:hidden;}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  animation:sweep 4s linear infinite;}
+@keyframes sweep{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);
+  overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
+.main{overflow:hidden;display:flex;flex-direction:column;}
+
+/* ── Typography ─────────────────────────────────────────────── */
+.logo{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;
+  color:var(--green);text-shadow:var(--glow);letter-spacing:6px;}
+.logo-sub{font-family:'Share Tech Mono',monospace;font-size:9px;
+  color:var(--muted);letter-spacing:3px;}
+.section-title{font-family:'Share Tech Mono',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:3px;text-transform:uppercase;
+  padding:6px 4px 4px;border-bottom:1px solid var(--border);}
+h2{font-family:'Orbitron',monospace;font-size:13px;color:var(--green);
+  letter-spacing:3px;text-transform:uppercase;}
+
+/* ── Status dots ────────────────────────────────────────────── */
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.dot.online{background:var(--green);box-shadow:var(--glow);animation:pulse 2s infinite;}
+.dot.warn  {background:var(--amber);box-shadow:var(--glow-a);}
+.dot.off   {background:#333;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+button{cursor:crosshair;border:none;outline:none;font-family:'Share Tech Mono',monospace;}
+.btn{
+  padding:9px 16px;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  color:var(--green);
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  border-radius:2px;transition:all 0.15s;
+  position:relative;overflow:hidden;
+}
+.btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,255,65,0.06),transparent);opacity:0;transition:opacity 0.2s;}
+.btn:hover{border-color:var(--green);box-shadow:var(--glow);color:#fff;}
+.btn:hover::before{opacity:1;}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:rgba(0,255,65,0.08);border-color:var(--green);
+  font-size:12px;padding:11px 24px;letter-spacing:3px;}
+.btn-primary:hover{background:rgba(0,255,65,0.18);box-shadow:var(--glow),var(--glow2);}
+.btn-amber{border-color:var(--amber);color:var(--amber);}
+.btn-amber:hover{box-shadow:var(--glow-a);}
+.btn-red{border-color:var(--red);color:var(--red);}
+.btn-sm{padding:5px 10px;font-size:10px;}
+.btn-icon{width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px;}
+
+/* ── Inputs ─────────────────────────────────────────────────── */
+input,select{
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;
+  padding:8px 12px;border-radius:2px;outline:none;width:100%;
+  transition:border 0.2s,box-shadow 0.2s;
+}
+input:focus,select:focus{border-color:var(--green);box-shadow:var(--glow);}
+input::placeholder{color:var(--muted);}
+label{font-family:'Share Tech Mono',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:2px;display:block;margin-bottom:4px;}
+.field{margin-bottom:10px;}
+
+/* ── Tabs ───────────────────────────────────────────────────── */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);}
+.tab{
+  padding:12px 20px;font-family:'Share Tech Mono',monospace;font-size:10px;
+  letter-spacing:2px;color:var(--muted);cursor:crosshair;
+  border-bottom:2px solid transparent;transition:all 0.2s;
+  position:relative;
+}
+.tab:hover{color:var(--green);}
+.tab.active{color:var(--green);border-bottom-color:var(--green);
+  text-shadow:var(--glow);}
+
+/* ── Terminal ───────────────────────────────────────────────── */
+.terminal{
+  background:#010804;
+  border:1px solid var(--border);border-radius:2px;
+  padding:14px 16px;
+  font-family:'Share Tech Mono',monospace;font-size:12px;
+  color:var(--green2);line-height:1.7;
+  overflow-y:auto;
+  flex:1;
+  position:relative;
+}
+.terminal::before{content:'◈ TERMINAL OUTPUT';position:absolute;top:-1px;left:16px;
+  font-size:9px;letter-spacing:3px;color:var(--muted);
+  background:var(--bg2);padding:0 6px;}
+.terminal .line-out{color:var(--green2);}
+.terminal .line-cmd{color:var(--amber);font-weight:bold;}
+.terminal .line-err{color:var(--red);}
+.terminal .line-sys{color:var(--cyan);}
+.terminal .line-ok {color:var(--green);text-shadow:var(--glow);}
+.terminal .prompt{color:var(--dim);}
+.cursor-blink{display:inline-block;width:8px;height:14px;
+  background:var(--green);animation:blink 1s step-end infinite;vertical-align:middle;}
+@keyframes blink{50%{opacity:0;}}
+
+/* ── Progress bar ───────────────────────────────────────────── */
+.progress-wrap{background:var(--bg3);border:1px solid var(--border);
+  height:4px;border-radius:1px;overflow:hidden;margin:8px 0;}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green3),var(--green));
+  transition:width 0.4s ease;box-shadow:var(--glow);position:relative;}
+.progress-bar::after{content:'';position:absolute;right:0;top:-2px;bottom:-2px;
+  width:4px;background:var(--green);filter:blur(2px);}
+
+/* ── Risk badges ────────────────────────────────────────────── */
+.badge{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;
+  padding:3px 10px;border-radius:1px;display:inline-block;}
+.badge.CRITICAL{background:rgba(255,34,68,0.15);border:1px solid var(--red);color:var(--red);}
+.badge.HIGH    {background:rgba(255,140,0,0.12);border:1px solid #ff8c00;color:#ff8c00;}
+.badge.MEDIUM  {background:rgba(255,200,0,0.10);border:1px solid #ffd700;color:#ffd700;}
+.badge.LOW     {background:rgba(0,255,204,0.10);border:1px solid var(--cyan);color:var(--cyan);}
+.badge.CLEAN   {background:rgba(0,255,65,0.10); border:1px solid var(--green);color:var(--green);}
+.badge.UNKNOWN {background:rgba(100,100,100,0.1);border:1px solid #555;color:#888;}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card{background:var(--panel);border:1px solid var(--border);
+  border-radius:2px;padding:14px 16px;margin-bottom:10px;}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+
+/* ── Sidebar items ──────────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0;}
+.stat-box{background:var(--bg3);border:1px solid var(--border);
+  border-radius:2px;padding:8px;text-align:center;}
+.stat-val{font-family:'Orbitron',monospace;font-size:18px;color:var(--green);
+  text-shadow:var(--glow);line-height:1;}
+.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;
+  color:var(--muted);letter-spacing:2px;margin-top:2px;}
+.stat-val.red{color:var(--red);}
+.stat-val.amber{color:var(--amber);}
+
+/* ── Tool chips ─────────────────────────────────────────────── */
+.tool-chip{display:flex;align-items:center;gap:8px;padding:7px 10px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:2px;
+  cursor:crosshair;transition:all 0.15s;margin-bottom:4px;}
+.tool-chip:hover{border-color:var(--green);background:rgba(0,255,65,0.04);}
+.tool-chip .icon{font-size:14px;}
+.tool-chip .name{font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:var(--green);letter-spacing:1px;}
+.tool-chip .phase{font-size:9px;color:var(--muted);margin-left:auto;}
+
+/* ── Log ────────────────────────────────────────────────────── */
+.log-box{background:#010804;border:1px solid var(--border);
+  max-height:180px;overflow-y:auto;padding:8px;}
+.log-line{font-family:'Share Tech Mono',monospace;font-size:10px;
+  padding:2px 0;border-bottom:1px solid #0a150c;line-height:1.5;}
+.log-ts{color:var(--border2);}
+.log-ok {color:var(--green);}
+.log-err{color:var(--red);}
+.log-inf{color:var(--cyan);}
+
+/* ── History items ──────────────────────────────────────────── */
+.history-item{background:var(--panel);border:1px solid var(--border);
+  border-radius:2px;margin-bottom:8px;overflow:hidden;}
+.history-header{display:flex;align-items:center;gap:10px;padding:10px 14px;
+  cursor:pointer;transition:background 0.15s;}
+.history-header:hover{background:rgba(0,255,65,0.04);}
+.history-body{padding:12px 14px;border-top:1px solid var(--border);
+  display:none;background:#010804;}
+.history-body.open{display:block;}
+.history-raw{font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:var(--green2);white-space:pre-wrap;word-break:break-all;
+  max-height:300px;overflow-y:auto;line-height:1.6;}
+
+/* ── Analytics bars ─────────────────────────────────────────── */
+.analytics-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.analytics-bar .lbl{width:80px;font-family:'Share Tech Mono',monospace;
+  font-size:11px;flex-shrink:0;}
+.bar-track{flex:1;background:var(--bg3);border-radius:1px;height:16px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:1px;transition:width 1s ease;}
+.bar-count{width:28px;font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:var(--muted);text-align:right;flex-shrink:0;}
+
+/* ── Ports table ────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse;}
+th{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;
+  color:var(--muted);border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;}
+td{font-family:'Share Tech Mono',monospace;font-size:11px;padding:6px 8px;
+  border-bottom:1px solid #0a150c;color:var(--text);}
+td.port{color:var(--amber);}
+td.svc {color:var(--green);}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--green3);}
+
+/* ── Notification toast ─────────────────────────────────────── */
+.toast{position:fixed;bottom:20px;right:20px;
+  background:var(--panel);border:1px solid var(--green);
+  color:var(--green);font-family:'Share Tech Mono',monospace;font-size:11px;
+  padding:10px 16px;border-radius:2px;z-index:10000;
+  transform:translateY(60px);opacity:0;transition:all 0.3s;
+  box-shadow:var(--glow);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.err{border-color:var(--red);color:var(--red);}
+
+/* ── Voice indicator ────────────────────────────────────────── */
+.voice-ring{width:10px;height:10px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 8px var(--red);display:none;animation:vpulse 0.6s infinite;}
+@keyframes vpulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
+
+/* ── Quick cmd buttons ──────────────────────────────────────── */
+.quick-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;}
+.quick-btn{padding:5px 10px;font-size:10px;letter-spacing:1px;
+  background:rgba(0,255,65,0.04);border:1px solid var(--border);
+  color:var(--green);border-radius:2px;cursor:crosshair;transition:all 0.15s;
+  font-family:'Share Tech Mono',monospace;}
+.quick-btn:hover{border-color:var(--green);background:rgba(0,255,65,0.10);}
+
+/* ── Grid background ────────────────────────────────────────── */
+.main-content{padding:16px;display:flex;flex-direction:column;gap:12px;
+  height:100%;overflow-y:auto;
+  background-image:
+    linear-gradient(rgba(0,255,65,0.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,65,0.015) 1px,transparent 1px);
+  background-size:40px 40px;}
+
+/* ── Tab content ────────────────────────────────────────────── */
+.tab-content{display:none;flex-direction:column;height:100%;overflow:hidden;}
+.tab-content.active{display:flex;}
+
+/* ── Findings list ──────────────────────────────────────────── */
+.finding{font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:#ff8888;padding:4px 8px;border-left:2px solid var(--red);
+  background:rgba(255,34,68,0.04);margin-bottom:3px;}
+
+/* ── Remediation ────────────────────────────────────────────── */
+.remed{background:rgba(0,255,65,0.04);border-left:2px solid var(--green);
+  padding:8px 12px;margin-bottom:6px;}
+.remed-title{font-family:'Orbitron',monospace;font-size:10px;color:var(--green);
+  letter-spacing:1px;margin-bottom:3px;}
+.remed-text{font-size:13px;color:var(--text);font-family:'Rajdhani',sans-serif;}
+
+/* ── Topbar right ───────────────────────────────────────────── */
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:16px;}
+.status-item{display:flex;align-items:center;gap:6px;
+  font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+.time-display{font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:var(--amber);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ══════════════ TOP BAR ══════════════ -->
+  <header class="topbar">
+    <div>
+      <div class="logo">SANDY AI</div>
+      <div class="logo-sub">SECURITY ANALYSIS & NETWORK DEFENSE INTELLIGENCE</div>
+    </div>
+    <div class="topbar-right">
+      <div class="status-item"><span class="dot online"></span>SYSTEM ONLINE</div>
+      <div class="status-item"><span class="dot online" id="ws-dot"></span><span id="ws-status">WS READY</span></div>
+      <div class="status-item"><span class="dot warn"></span>AUTH REQUIRED</div>
+      <div class="time-display" id="clock">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="sidebar">
+
+    <div class="section-title">◈ SCAN CONFIG</div>
+    <div class="field">
+      <label>NMAP PROFILE</label>
+      <select id="scan-profile">
+        <option value="standard">STANDARD (-A -T4)</option>
+        <option value="quick">QUICK (-F -T4)</option>
+        <option value="stealth">STEALTH (-sS -T2)</option>
+        <option value="full">FULL (-p- -T4)</option>
+        <option value="vuln">VULN (--script=vuln)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>SSH USERNAME (HYDRA)</label>
+      <input id="ssh-user" value="admin" placeholder="admin"/>
+    </div>
+    <div class="field">
+      <label>WORDLIST PATH</label>
+      <input id="wordlist" value="/usr/share/wordlists/rockyou.txt"/>
+    </div>
+    <div class="field">
+      <label>GOBUSTER WORDLIST</label>
+      <input id="gobuster-wl" value="/usr/share/wordlists/dirb/common.txt"/>
+    </div>
+
+    <div class="section-title" style="margin-top:8px;">◈ SESSION STATS</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-val" id="stat-total">0</div><div class="stat-lbl">SCANS</div></div>
+      <div class="stat-box"><div class="stat-val red" id="stat-crit">0</div><div class="stat-lbl">CRIT</div></div>
+      <div class="stat-box"><div class="stat-val amber" id="stat-high">0</div><div class="stat-lbl">HIGH</div></div>
+    </div>
+
+    <div class="section-title" style="margin-top:8px;">◈ TOOLS</div>
+    <div id="tool-list">
+      <div class="tool-chip" onclick="fillCmd('Scan my network for open ports')">
+        <span class="icon">🌐</span><span class="name">NMAP</span><span class="phase">PHASE 1</span>
+      </div>
+      <div class="tool-chip" onclick="fillCmd('Scan website for vulnerabilities')">
+        <span class="icon">🌍</span><span class="name">NIKTO</span><span class="phase">PHASE 1</span>
+      </div>
+      <div class="tool-chip" onclick="fillCmd('Test SQL injection on target')">
+        <span class="icon">💉</span><span class="name">SQLMAP</span><span class="phase">PHASE 2</span>
+      </div>
+      <div class="tool-chip" onclick="fillCmd('Brute force SSH login')">
+        <span class="icon">🔐</span><span class="name">HYDRA</span><span class="phase">PHASE 2</span>
+      </div>
+      <div class="tool-chip" onclick="fillCmd('Find hidden directories')">
+        <span class="icon">📁</span><span class="name">GOBUSTER</span><span class="phase">PHASE 2</span>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:8px;">◈ EXPORT</div>
+    <div style="display:flex;gap:6px;">
+      <button class="btn btn-sm" style="flex:1;" onclick="exportReport('json')">JSON</button>
+      <button class="btn btn-sm btn-amber" style="flex:1;" onclick="exportReport('pdf')">PDF</button>
+    </div>
+
+    <div style="margin-top:8px;">
+      <button class="btn btn-sm btn-red" style="width:100%;" onclick="clearHistory()">🗑 CLEAR SESSION</button>
+    </div>
+
+    <div style="margin-top:auto;padding-top:12px;font-family:'Share Tech Mono',monospace;
+                font-size:9px;color:var(--border2);line-height:1.8;letter-spacing:1px;">
+      ⚠ AUTHORIZED USE ONLY<br>
+      Test only systems you own<br>
+      or have written permission.<br>
+      Unauthorized use is illegal.
+    </div>
+  </aside>
+
+  <!-- ══════════════ MAIN PANEL ══════════════ -->
+  <main class="main">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('cmd')">⌨ COMMAND CENTER</div>
+      <div class="tab" onclick="switchTab('history')">📋 SCAN HISTORY</div>
+      <div class="tab" onclick="switchTab('analytics')">📊 ANALYTICS</div>
+      <div class="tab" onclick="switchTab('docs')">📖 DOCS</div>
+    </div>
+
+    <!-- ── COMMAND CENTER ── -->
+    <div class="tab-content active" id="tab-cmd">
+      <div class="main-content">
+
+        <!-- Input row -->
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <h2>◈ COMMAND INPUT</h2>
+            <button class="btn btn-sm btn-amber" id="voice-btn" onclick="startVoice()">🎤 VOICE</button>
+            <div class="voice-ring" id="voice-ring"></div>
+            <span id="voice-status" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);"></span>
+          </div>
+
+          <div class="quick-row">
+            <button class="quick-btn" onclick="fillCmd('Scan my network for open ports')">🌐 NET SCAN</button>
+            <button class="quick-btn" onclick="fillCmd('Scan website for vulnerabilities')">🌍 WEB SCAN</button>
+            <button class="quick-btn" onclick="fillCmd('Test SQL injection on target')">💉 SQL INJECT</button>
+            <button class="quick-btn" onclick="fillCmd('Brute force SSH login')">🔐 BRUTE FORCE</button>
+            <button class="quick-btn" onclick="fillCmd('Find hidden directories')">📁 DIR SCAN</button>
+            <button class="quick-btn" onclick="fillCmd('help')">❓ HELP</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="field" style="margin:0;">
+              <label>COMMAND / INTENT</label>
+              <input id="cmd-input" placeholder="e.g. Scan my network for open ports" onkeydown="if(event.key==='Enter')runScan()"/>
+            </div>
+            <div class="field" style="margin:0;">
+              <label>TARGET (IP / CIDR / URL)</label>
+              <input id="target-input" placeholder="e.g. 192.168.1.1 or http://site.com" onkeydown="if(event.key==='Enter')runScan()"/>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px;">
+            <button class="btn btn-primary" onclick="runScan()" id="run-btn">▶ EXECUTE SCAN</button>
+            <button class="btn btn-sm btn-red" onclick="stopScan()" id="stop-btn" style="display:none;">■ ABORT</button>
+            <div style="flex:1;">
+              <div class="progress-wrap"><div class="progress-bar" id="prog-bar"></div></div>
+            </div>
+            <span id="prog-label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap;min-width:120px;text-align:right;"></span>
+          </div>
+        </div>
+
+        <!-- Results grid -->
+        <div style="display:grid;grid-template-columns:3fr 1fr;gap:12px;flex:1;min-height:0;">
+
+          <!-- Terminal -->
+          <div style="display:flex;flex-direction:column;min-height:0;">
+            <div class="terminal" id="terminal">
+              <span class="line-sys">███████  SANDY AI v2.0  ███████</span><br>
+              <span class="line-sys">Security Analysis & Network Defense Intelligence</span><br>
+              <span class="line-sys">────────────────────────────────────────────────</span><br>
+              <span class="prompt">[ </span><span style="color:var(--green)">READY</span><span class="prompt"> ] Enter a command above to begin scanning.</span><br>
+              <span class="prompt">Type "help" for available commands.</span><br><br>
+              <span class="cursor-blink"></span>
+            </div>
+          </div>
+
+          <!-- Analysis panel -->
+          <div style="display:flex;flex-direction:column;gap:10px;overflow-y:auto;">
+            <div class="card" id="analysis-panel" style="display:none;">
+              <div class="card-header">
+                <span style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);">RISK ASSESSMENT</span>
+                <span class="badge UNKNOWN" id="risk-badge">PENDING</span>
+              </div>
+              <div id="analysis-summary" style="font-size:13px;margin-bottom:10px;"></div>
+              <div id="score-bars"></div>
+            </div>
+
+            <div class="card" id="ports-panel" style="display:none;">
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;">
+                OPEN PORTS
+              </div>
+              <table id="ports-table">
+                <thead><tr><th>PORT</th><th>SERVICE</th></tr></thead>
+                <tbody id="ports-body"></tbody>
+              </table>
+            </div>
+
+            <div class="card" id="findings-panel" style="display:none;">
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;">
+                FINDINGS
+              </div>
+              <div id="findings-list"></div>
+            </div>
+
+            <div class="card" id="remed-panel" style="display:none;">
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--green);margin-bottom:8px;">
+                REMEDIATION
+              </div>
+              <div id="remed-list"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Activity log -->
+        <div>
+          <div class="section-title">◈ ACTIVITY LOG</div>
+          <div class="log-box" id="log-box"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── HISTORY ── -->
+    <div class="tab-content" id="tab-history">
+      <div class="main-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h2>◈ SCAN HISTORY</h2>
+          <button class="btn btn-sm btn-red" onclick="clearHistory()">CLEAR ALL</button>
+        </div>
+        <div id="history-list">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted);padding:20px 0;">
+            No scans yet. Run a scan from Command Center.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANALYTICS ── -->
+    <div class="tab-content" id="tab-analytics">
+      <div class="main-content">
+        <h2>◈ THREAT ANALYTICS</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+          <div class="card">
+            <div class="section-title" style="margin-bottom:10px;">RISK DISTRIBUTION</div>
+            <div id="risk-analytics"></div>
+          </div>
+          <div class="card">
+            <div class="section-title" style="margin-bottom:10px;">TOOLS USED</div>
+            <div id="tool-analytics"></div>
+          </div>
+        </div>
+        <div class="card" id="ports-analytics" style="margin-top:0;">
+          <div class="section-title" style="margin-bottom:10px;">DISCOVERED SERVICES</div>
+          <div id="services-list" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DOCS ── -->
+    <div class="tab-content" id="tab-docs">
+      <div class="main-content">
+        <h2>◈ DOCUMENTATION</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+          <div class="card">
+            <div class="section-title" style="margin-bottom:10px;">QUICK START</div>
+            <pre style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green2);line-height:1.8;white-space:pre-wrap;"># Install dependencies
+pip install -r requirements.txt
+
+# Install security tools (Kali)
+apt install nmap nikto sqlmap hydra gobuster -y
+
+# Launch SANDY web server
+python server.py
+# → Open http://localhost:8000</pre>
+          </div>
+          <div class="card">
+            <div class="section-title" style="margin-bottom:10px;">VOICE COMMANDS</div>
+            <pre style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green2);line-height:1.8;white-space:pre-wrap;">"Scan my network for open ports"
+"Scan website for vulnerabilities"
+"Test SQL injection on target"
+"Brute force SSH login"
+"Find hidden directories"
+"Generate report"
+"Help"
+
+Uses Web Speech API (Chrome/Edge).
+No extra libraries needed!</pre>
+          </div>
+          <div class="card">
+            <div class="section-title" style="margin-bottom:10px;">TOOL REFERENCE</div>
+            <table>
+              <thead><tr><th>TOOL</th><th>PURPOSE</th><th>PHASE</th></tr></thead>
+              <tbody>
+                <tr><td class="svc">nmap</td><td>Network & port scanning</td><td style="color:var(--green);">1</td></tr>
+                <tr><td class="svc">nikto</td><td>Web server vulnerabilities</td><td style="color:var(--green);">1</td></tr>
+                <tr><td class="svc">sqlmap</td><td>SQL injection testing</td><td style="color:var(--amber);">2</td></tr>
+                <tr><td class="svc">hydra</td><td>Login brute force</td><td style="color:var(--amber);">2</td></tr>
+                <tr><td class="svc">gobuster</td><td>Directory enumeration</td><td style="color:var(--amber);">2</td></tr>
+                <tr><td class="svc">openvas</td><td>Full vulnerability scan</td><td style="color:var(--red);">3</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="section-title" style="margin-bottom:10px;">LEGAL DISCLAIMER</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--text);line-height:1.8;">
+              <span style="color:var(--red);font-weight:700;">⚠ AUTHORIZED USE ONLY</span><br><br>
+              Only test systems you own or have <strong>explicit written permission</strong> to test.<br><br>
+              Unauthorized use is illegal under:<br>
+              • Computer Fraud & Abuse Act (US)<br>
+              • Computer Misuse Act 1990 (UK)<br>
+              • IT Act 2000 (India)<br>
+              • Equivalent laws worldwide
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  SANDY AI — Frontend JavaScript
+// ═══════════════════════════════════════════════════════════════
+
+const API = window.location.origin;
+const WS_URL = `ws://${window.location.host}/ws/scan`;
+
+let ws = null;
+let scanning = false;
+
+// ── Clock ─────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toTimeString().slice(0,8) + ' ' + now.toLocaleDateString('en-GB');
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Toast ─────────────────────────────────────────────────────
+function toast(msg, isErr = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (isErr ? ' err' : '');
+  setTimeout(() => el.className = 'toast', 3000);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const ids = ['cmd','history','analytics','docs'];
+    t.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'analytics') loadAnalytics();
+  if (id === 'history')   renderHistory();
+}
+
+// ── Terminal ──────────────────────────────────────────────────
+function termPrint(text, cls = 'line-out') {
+  const term = document.getElementById('terminal');
+  // Remove old cursor
+  const old = term.querySelector('.cursor-blink');
+  if (old) old.remove();
+  const line = document.createElement('div');
+  line.className = cls;
+  line.textContent = text;
+  term.appendChild(line);
+  // Add cursor back
+  const cur = document.createElement('span');
+  cur.className = 'cursor-blink';
+  term.appendChild(cur);
+  term.scrollTop = term.scrollHeight;
+}
+
+function termClear() {
+  document.getElementById('terminal').innerHTML =
+    '<span class="cursor-blink"></span>';
+}
+
+// ── Activity Log ──────────────────────────────────────────────
+function addLog(msg, cls = 'log-inf') {
+  const box = document.getElementById('log-box');
+  const now = new Date().toTimeString().slice(0,8);
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="log-ts">[${now}]</span> <span class="${cls}"> ${msg.slice(0,80)}</span>`;
+  box.insertBefore(line, box.firstChild);
+  if (box.children.length > 40) box.removeChild(box.lastChild);
+}
+
+// ── Progress ──────────────────────────────────────────────────
+function setProgress(pct, label = '') {
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = label;
+}
+
+// ── Fill command ──────────────────────────────────────────────
+function fillCmd(cmd) {
+  document.getElementById('cmd-input').value = cmd;
+  document.getElementById('cmd-input').focus();
+}
+
+// ── Voice Input (Web Speech API) ─────────────────────────────
+let recognition = null;
+function startVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    toast('Voice not supported. Use Chrome or Edge.', true);
+    return;
+  }
+  if (recognition) { recognition.abort(); return; }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  document.getElementById('voice-ring').style.display = 'inline-block';
+  document.getElementById('voice-status').textContent = 'LISTENING...';
+  document.getElementById('voice-btn').textContent = '⏹ STOP';
+
+  recognition.onresult = e => {
+    const text = e.results[0][0].transcript;
+    document.getElementById('cmd-input').value = text;
+    addLog(`Voice: "${text}"`, 'log-ok');
+    toast(`Heard: ${text}`);
+  };
+  recognition.onerror = e => {
+    toast('Voice error: ' + e.error, true);
+    addLog('Voice error: ' + e.error, 'log-err');
+  };
+  recognition.onend = () => {
+    document.getElementById('voice-ring').style.display = 'none';
+    document.getElementById('voice-status').textContent = '';
+    document.getElementById('voice-btn').textContent = '🎤 VOICE';
+    recognition = null;
+  };
+  recognition.start();
+}
+
+// ── Run Scan via WebSocket ────────────────────────────────────
+function runScan() {
+  if (scanning) return;
+  const cmd    = document.getElementById('cmd-input').value.trim();
+  const target = document.getElementById('target-input').value.trim();
+  if (!cmd) { toast('Enter a command first.', true); return; }
+
+  termClear();
+  termPrint('═══════════════════════════════════════', 'line-sys');
+  termPrint(' SANDY AI — Scan Initiated', 'line-sys');
+  termPrint('═══════════════════════════════════════', 'line-sys');
+  termPrint(`Command : ${cmd}`, 'line-sys');
+  if (target) termPrint(`Target  : ${target}`, 'line-sys');
+  termPrint('───────────────────────────────────────', 'line-sys');
+
+  // Hide old results
+  ['analysis-panel','ports-panel','findings-panel','remed-panel'].forEach(id =>
+    document.getElementById(id).style.display = 'none');
+
+  setProgress(0, 'CONNECTING...');
+  scanning = true;
+  document.getElementById('run-btn').disabled = true;
+  document.getElementById('stop-btn').style.display = 'inline-block';
+
+  ws = new WebSocket(WS_URL);
+  ws.onopen = () => {
+    document.getElementById('ws-dot').style.background = 'var(--amber)';
+    document.getElementById('ws-status').textContent = 'WS ACTIVE';
+    ws.send(JSON.stringify({
+      command:     cmd,
+      target:      target,
+      scan_profile: document.getElementById('scan-profile').value,
+      ssh_user:    document.getElementById('ssh-user').value,
+      wordlist:    document.getElementById('wordlist').value,
+      gobuster_wl: document.getElementById('gobuster-wl').value,
+    }));
+    setProgress(5, 'INITIALIZING...');
+    addLog(`Scan started: "${cmd}"`, 'log-ok');
+  };
+
+  ws.onmessage = e => {
+    const data = JSON.parse(e.data);
+    switch (data.type) {
+      case 'intent':
+        termPrint(`Intent  : ${data.action.toUpperCase()}`, 'line-sys');
+        termPrint(`Tool    : ${data.tool.toUpperCase()}`, 'line-sys');
+        termPrint(`Target  : ${data.target}`, 'line-sys');
+        termPrint('───────────────────────────────────────', 'line-sys');
+        addLog(`Tool: ${data.tool.toUpperCase()} → ${data.target}`);
+        break;
+      case 'status':
+        setProgress(data.pct, data.msg);
+        termPrint('[ ' + data.msg + ' ]', 'line-sys');
+        break;
+      case 'cmd':
+        termPrint(data.msg, 'line-cmd');
+        break;
+      case 'line':
+        termPrint(data.msg, 'line-out');
+        setProgress(data.pct, 'SCANNING...');
+        break;
+      case 'done':
+        setProgress(100, 'COMPLETE ✓');
+        termPrint('───────────────────────────────────────', 'line-sys');
+        termPrint('SCAN COMPLETE', 'line-ok');
+        termPrint(`Risk Level: ${data.analysis.overall_risk}`, 'line-ok');
+        termPrint('───────────────────────────────────────', 'line-sys');
+        renderAnalysis(data.analysis);
+        addLog(`Complete → Risk: ${data.analysis.overall_risk}`, 'log-ok');
+        updateStats();
+        renderHistory();
+        scanDone();
+        break;
+      case 'help':
+        termPrint(data.msg, 'line-sys');
+        scanDone();
+        break;
+      case 'unknown':
+      case 'error':
+        termPrint('ERROR: ' + data.msg, 'line-err');
+        setProgress(0, 'ERROR');
+        addLog('Error: ' + data.msg, 'log-err');
+        toast(data.msg, true);
+        scanDone();
+        break;
+      case 'cleared':
+        toast('Session cleared.');
+        updateStats();
+        renderHistory();
+        scanDone();
+        break;
+    }
+  };
+
+  ws.onclose = () => {
+    document.getElementById('ws-dot').style.background = 'var(--green)';
+    document.getElementById('ws-status').textContent = 'WS READY';
+    scanDone();
+  };
+  ws.onerror = () => {
+    toast('WebSocket error. Is the server running?', true);
+    addLog('WS connection error', 'log-err');
+    scanDone();
+  };
+}
+
+function stopScan() {
+  if (ws) ws.close();
+  scanDone();
+  termPrint('[ SCAN ABORTED BY USER ]', 'line-err');
+  addLog('Scan aborted', 'log-err');
+  setProgress(0, 'ABORTED');
+}
+
+function scanDone() {
+  scanning = false;
+  document.getElementById('run-btn').disabled = false;
+  document.getElementById('stop-btn').style.display = 'none';
+}
+
+// ── Render analysis panel ─────────────────────────────────────
+function renderAnalysis(a) {
+  const riskColors = {
+    CRITICAL:'var(--red)', HIGH:'#ff8c00', MEDIUM:'#ffd700',
+    LOW:'var(--cyan)', CLEAN:'var(--green)', UNKNOWN:'#888'
+  };
+
+  // Risk badge
+  const badge = document.getElementById('risk-badge');
+  badge.className = 'badge ' + a.overall_risk;
+  badge.textContent = a.overall_risk;
+  document.getElementById('analysis-summary').textContent = a.summary;
+
+  // Score bars
+  const sb = document.getElementById('score-bars');
+  sb.innerHTML = '';
+  const levels = [['CRITICAL',a.score.CRITICAL,'var(--red)'],
+                  ['HIGH',a.score.HIGH,'#ff8c00'],
+                  ['MEDIUM',a.score.MEDIUM,'#ffd700'],
+                  ['LOW',a.score.LOW,'var(--cyan)']];
+  const max = Math.max(...levels.map(l=>l[1]), 1);
+  levels.forEach(([lbl,cnt,col]) => {
+    if (cnt === 0) return;
+    sb.innerHTML += `
+    <div class="analytics-bar">
+      <div class="lbl" style="color:${col};font-size:10px;">${lbl}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(cnt/max)*100}%;background:${col};"></div></div>
+      <div class="bar-count">${cnt}</div>
+    </div>`;
+  });
+  document.getElementById('analysis-panel').style.display = 'block';
+
+  // Ports
+  if (a.open_ports && a.open_ports.length) {
+    const tbody = document.getElementById('ports-body');
+    tbody.innerHTML = a.open_ports.map(p =>
+      `<tr><td class="port">${p.port}</td><td class="svc">${p.service}</td></tr>`
+    ).join('');
+    document.getElementById('ports-panel').style.display = 'block';
+  }
+
+  // Findings
+  if (a.findings && a.findings.length) {
+    document.getElementById('findings-list').innerHTML =
+      a.findings.slice(0,10).map(f => `<div class="finding">◈ ${f.slice(0,80)}</div>`).join('');
+    document.getElementById('findings-panel').style.display = 'block';
+  }
+
+  // Remediations
+  if (a.remediations && a.remediations.length) {
+    document.getElementById('remed-list').innerHTML =
+      a.remediations.map(r => `
+        <div class="remed">
+          <div class="remed-title">${r.issue}</div>
+          <div class="remed-text">${r.fix}</div>
+        </div>`).join('');
+    document.getElementById('remed-panel').style.display = 'block';
+  }
+}
+
+// ── Stats update ──────────────────────────────────────────────
+async function updateStats() {
+  try {
+    const res = await fetch(API + '/api/stats');
+    const d   = await res.json();
+    document.getElementById('stat-total').textContent = d.total;
+    document.getElementById('stat-crit').textContent  = d.critical;
+    document.getElementById('stat-high').textContent  = d.high;
+  } catch(e) {}
+}
+
+// ── History ───────────────────────────────────────────────────
+async function renderHistory() {
+  try {
+    const res  = await fetch(API + '/api/history');
+    const data = await res.json();
+    const box  = document.getElementById('history-list');
+
+    if (!data.length) {
+      box.innerHTML = '<div style="font-family:\'Share Tech Mono\',monospace;font-size:12px;color:var(--muted);padding:20px 0;">No scans yet.</div>';
+      return;
+    }
+
+    box.innerHTML = data.map((s,i) => {
+      const risk = s.analysis?.overall_risk || 'UNKNOWN';
+      const ts   = s.timestamp?.slice(0,16).replace('T',' ') || '';
+      return `
+      <div class="history-item">
+        <div class="history-header" onclick="toggleHistory(${i})">
+          <span class="badge ${risk}">${risk}</span>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green);">${s.tool?.toUpperCase()}</span>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);">→ ${s.target}</span>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-left:auto;">${ts}</span>
+          <span style="color:var(--muted);font-size:12px;">▼</span>
+        </div>
+        <div class="history-body" id="hb-${i}">
+          <div style="display:flex;gap:16px;margin-bottom:10px;">
+            <div class="stat-box" style="min-width:70px;"><div class="stat-val" style="font-size:14px;">${s.analysis?.open_ports?.length||0}</div><div class="stat-lbl">PORTS</div></div>
+            <div class="stat-box" style="min-width:70px;"><div class="stat-val red" style="font-size:14px;">${s.analysis?.findings?.length||0}</div><div class="stat-lbl">FINDINGS</div></div>
+            <div class="stat-box" style="min-width:70px;"><div class="stat-val" style="font-size:14px;color:var(--cyan);">${s.analysis?.remediations?.length||0}</div><div class="stat-lbl">FIXES</div></div>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:4px;">COMMAND: ${s.command||''}</div>
+          <div class="history-raw">${(s.raw||'').slice(0,2000)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+function toggleHistory(i) {
+  const el = document.getElementById('hb-' + i);
+  if (el) el.classList.toggle('open');
+}
+
+// ── Analytics ─────────────────────────────────────────────────
+async function loadAnalytics() {
+  try {
+    const res  = await fetch(API + '/api/stats');
+    const d    = await res.json();
+    const hist = await (await fetch(API + '/api/history')).json();
+
+    // Risk bars
+    const rcolors = {CRITICAL:'var(--red)',HIGH:'#ff8c00',MEDIUM:'#ffd700',LOW:'var(--cyan)',CLEAN:'var(--green)'};
+    const total = d.total || 1;
+    document.getElementById('risk-analytics').innerHTML =
+      Object.entries(d.risk_dist || {}).map(([k,v]) =>
+        `<div class="analytics-bar">
+          <div class="lbl" style="color:${rcolors[k]||'#888'};font-size:10px;">${k}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(v/total)*100}%;background:${rcolors[k]||'#888'};"></div></div>
+          <div class="bar-count">${v}</div>
+        </div>`).join('') || '<div style="color:var(--muted);font-family:\'Share Tech Mono\',monospace;font-size:11px;">No data yet.</div>';
+
+    // Tool bars
+    document.getElementById('tool-analytics').innerHTML =
+      Object.entries(d.tool_dist || {}).map(([k,v]) =>
+        `<div class="analytics-bar">
+          <div class="lbl" style="color:var(--green);font-size:10px;">${k}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(v/total)*100}%;background:var(--green);opacity:0.7;"></div></div>
+          <div class="bar-count">${v}</div>
+        </div>`).join('') || '<div style="color:var(--muted);font-family:\'Share Tech Mono\',monospace;font-size:11px;">No data yet.</div>';
+
+    // Services
+    const services = {};
+    hist.forEach(s => (s.analysis?.open_ports||[]).forEach(p => {
+      services[p.service] = (services[p.service]||0) + 1;
+    }));
+    document.getElementById('services-list').innerHTML =
+      Object.entries(services).map(([k,v]) =>
+        `<div style="background:var(--bg3);border:1px solid var(--border);padding:6px 12px;border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green);">
+          ${k} <span style="color:var(--muted);">(${v})</span>
+        </div>`).join('') ||
+      '<div style="color:var(--muted);font-family:\'Share Tech Mono\',monospace;font-size:11px;">No port data yet.</div>';
+
+  } catch(e) {}
+}
+
+// ── Export ────────────────────────────────────────────────────
+async function exportReport(fmt) {
+  try {
+    const res  = await fetch(API + '/api/report/' + fmt, {method:'POST'});
+    const data = await res.json();
+    if (data.path) {
+      toast(`Report saved: ${data.path}`);
+      addLog(`Report generated: ${data.path}`, 'log-ok');
+    }
+  } catch(e) {
+    toast('Export failed. Ensure scans exist.', true);
+  }
+}
+
+// ── Clear ─────────────────────────────────────────────────────
+async function clearHistory() {
+  await fetch(API + '/api/history', {method:'DELETE'});
+  toast('Session cleared.');
+  updateStats();
+  renderHistory();
+  addLog('Session cleared.', 'log-inf');
+}
+
+// ── Init ──────────────────────────────────────────────────────
+updateStats();
+addLog('SANDY AI system ready.', 'log-ok');
+termPrint('System initialized. Waiting for commands.', 'line-sys');
+</script>
+</body>
+</html>
